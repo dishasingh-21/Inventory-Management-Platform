@@ -19,7 +19,7 @@
 }
 
 body {
-    background: linear-gradient(135deg, #f5edff 0%, #e9deff 50%);
+    background: linear-gradient(135deg, #f5edff 0%, #f5edff 50%);
     color: var(--text-dark);
     min-height: 100vh;
     overflow-x: hidden;
