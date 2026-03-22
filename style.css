@@ -19,7 +19,7 @@
 }
 
 body {
-    background: linear-gradient(135deg, #e4d5ff 0%, #d9c9ff 100%);
+    background: linear-gradient(135deg, #f5edff 0%, #e2d4ff 100%);
     color: var(--text-dark);
     min-height: 100vh;
     overflow-x: hidden;
@@ -63,12 +63,11 @@ header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background: var(glass-bg);
-    backdrop-filter: blur(10px);
-    border: 1px solid var(glass-border);
+    background: var(--bg-white);
+    border: 1px solid rgba(112, 71, 235, 0.1);
     padding: 8px 12px;
     border-radius: 50px;
-    box-shadow: var(card-shadow);
+    box-shadow: 0 4px 20px rgba(112, 71, 235, 0.08);
 }
 
 .logo {
