@@ -1,14 +1,14 @@
 :root {
-    --primary-purple: #7047eb;
-    --primary-purple-glow: rgba(112, 71, 235, 0.2);
-    --bg-white: #ffffff;
-    --bg-light-purple: #f8f6ff;
-    --text-dark: #1a1a1a;
-    --text-muted: #666666;
-    --glass-bg: rgba(255, 255, 255, 0.7);
-    --glass-border: rgba(255, 255, 255, 0.3);
-    --card-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
-    --nav-pills-bg: #f3f0ff;
+    primary-purple: #7047eb;
+    primary-purple-glow: rgba(112, 71, 235, 0.2);
+    bg-white: #ffffff;
+    bg-light-purple: #f8f6ff;
+    text-dark: #1a1a1a;
+    text-muted: #666666;
+    glass-bg: rgba(255, 255, 255, 0.7);
+    glass-border: rgba(255, 255, 255, 0.3);
+    card-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+    nav-pills-bg: #f3f0ff;
 }
 
 * {
@@ -20,7 +20,7 @@
 
 body {
     background: linear-gradient(135deg, #fdfbff 0%, #f0ebff 100%);
-    color: var(--text-dark);
+    color: var(text-dark);
     min-height: 100vh;
     overflow-x: hidden;
 }
@@ -38,13 +38,13 @@ body::before, body::after {
 }
 
 body::before {
-    background: radial-gradient(circle, var(--primary-purple) 0%, transparent 70%);
+    background: radial-gradient(circle, var(-primary-purple) 0%, transparent 70%);
     top: -200px;
     left: -200px;
 }
 
 body::after {
-    background: radial-gradient(circle, var(--primary-purple) 0%, transparent 70%);
+    background: radial-gradient(circle, var(primary-purple) 0%, transparent 70%);
     bottom: -200px;
     right: -200px;
 }
@@ -63,12 +63,12 @@ header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background: var(--glass-bg);
+    background: var(glass-bg);
     backdrop-filter: blur(10px);
-    border: 1px solid var(--glass-border);
+    border: 1px solid var(glass-border);
     padding: 8px 12px;
     border-radius: 50px;
-    box-shadow: var(--card-shadow);
+    box-shadow: var(card-shadow);
 }
 
 .logo {
@@ -82,11 +82,11 @@ header {
     font-size: 1.5rem;
     font-weight: 700;
     letter-spacing: -0.5px;
-    color: var(--primary-purple);
+    color: var(primary-purple);
 }
 
 .nav-links-wrapper {
-    background: var(--nav-pills-bg);
+    background: var(nav-pills-bg);
     padding: 4px;
     border-radius: 40px;
 }
@@ -99,7 +99,7 @@ header {
 
 .nav-item {
     text-decoration: none;
-    color: var(--text-muted);
+    color: var(text-muted);
     padding: 10px 24px;
     border-radius: 30px;
     font-weight: 500;
@@ -108,12 +108,12 @@ header {
 }
 
 .nav-item:hover {
-    color: var(--text-dark);
+    color: var(text-dark);
 }
 
 .nav-item.active {
-    background: var(--bg-white);
-    color: var(--text-dark);
+    background: var(bg-white);
+    color: var(text-dark);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 }
 
@@ -164,17 +164,17 @@ header {
     position: absolute;
     top: 60px;
     right: 0;
-    background: var(--bg-white);
+    background: var(bg-white);
     padding: 12px 20px;
     border-radius: 12px;
-    box-shadow: var(--card-shadow);
+    box-shadow: var(card-shadow);
     white-space: nowrap;
     opacity: 0;
     visibility: hidden;
     transition: all 0.3s ease;
-    border: 1px solid var(--glass-border);
+    border: 1px solid var(glass-border);
     font-weight: 600;
-    color: var(--primary-purple);
+    color: var(primary-purple);
 }
 
 .user-profile:active .profile-tooltip,
@@ -210,7 +210,7 @@ header {
 }
 
 .hero p {
-    color: var(--text-muted);
+    color: var(text-muted);
     font-size: 1.1rem;
     max-width: 600px;
     margin: 0 auto 40px;
@@ -221,12 +221,12 @@ header {
     display: flex;
     justify-content: center;
     gap: 12px;
-    background: var(--glass-bg);
+    background: var(glass-bg);
     padding: 8px;
     border-radius: 50px;
     max-width: 500px;
     margin: 0 auto;
-    border: 1px solid var(--glass-border);
+    border: 1px solid var(glass-border);
     backdrop-filter: blur(5px);
 }
 
@@ -240,7 +240,7 @@ header {
 }
 
 .subscribe-btn {
-    background: var(--primary-purple);
+    background: var(primary-purple);
     color: white;
     border: none;
     padding: 12px 32px;
@@ -263,11 +263,11 @@ header {
 }
 
 .stock-list-card, .chart-card {
-    background: var(--bg-white);
+    background: var(bg-white);
     border-radius: 24px;
     padding: 30px;
-    box-shadow: var(--card-shadow);
-    border: 1px solid var(--glass-border);
+    box-shadow: var(card-shadow);
+    border: 1px solid var(glass-border);
 }
 
 .stock-list {
@@ -287,7 +287,7 @@ header {
 }
 
 .stock-item:hover {
-    background: var(--bg-light-purple);
+    background: var(bg-light-purple);
 }
 
 .stock-icon {
@@ -314,7 +314,7 @@ header {
 
 .stock-symbol {
     font-size: 0.85rem;
-    color: var(--text-muted);
+    color: var(text-muted);
 }
 
 .stock-price-info {
@@ -332,11 +332,11 @@ header {
 }
 
 .stock-change.positive {
-    color: #2ecc71;
+    color:#2ecc71 ;
 }
 
 .stock-change.neutral {
-    color: var(--primary-purple);
+    color: var(primary-purple);
 }
 
 /* Chart Styles */
@@ -356,7 +356,7 @@ header {
 .chart-tabs {
     display: flex;
     gap: 15px;
-    color: var(--text-muted);
+    color: var(text-muted);
     font-size: 0.85rem;
     font-weight: 600;
 }
@@ -378,12 +378,12 @@ header {
 .time-link {
     font-size: 0.85rem;
     font-weight: 600;
-    color: var(--text-muted);
+    color: var(text-muted);
     cursor: pointer;
 }
 
 .time-link.active {
-    color: var(--text-dark);
+    color: var(text-dark);
     position: relative;
 }
 
@@ -394,7 +394,7 @@ header {
     left: 0;
     width: 100%;
     height: 2px;
-    background: var(--primary-purple);
+    background: var(primary-purple);
 }
 
 .chart-area {
@@ -408,7 +408,7 @@ header {
 .chart-line {
     width: 100%;
     height: 100%;
-    stroke: var(--primary-purple);
+    stroke: var(primary-purple);
     stroke-width: 3;
     fill: none;
 }
@@ -450,11 +450,11 @@ header {
     font-size: 2.2rem;
     font-weight: 700;
     margin-bottom: 8px;
-    color: var(--text-dark);
+    color: var(text-dark);
 }
 
 .page-description {
-    color: var(--text-muted);
+    color: var(text-muted);
     font-size: 1rem;
     max-width: 800px;
     line-height: 1.5;
@@ -480,16 +480,16 @@ header {
     width: 100%;
     padding: 12px 20px 12px 45px;
     border-radius: 12px;
-    border: 1px solid var(--glass-border);
-    background: var(--bg-white);
+    border: 1px solid var(glass-border);
+    background: var(bg-white);
     font-size: 0.95rem;
     outline: none;
-    box-shadow: var(--card-shadow);
+    box-shadow: var(card-shadow);
     transition: border-color 0.3s ease;
 }
 
 .search-input:focus {
-    border-color: var(--primary-purple);
+    border-color: var(primary-purple);
 }
 
 .search-icon {
@@ -497,7 +497,7 @@ header {
     left: 15px;
     top: 50%;
     transform: translateY(-50%);
-    color: var(--text-muted);
+    color: var(text-muted);
 }
 
 .filters-group {
@@ -508,12 +508,12 @@ header {
 .filter-select {
     padding: 10px 15px;
     border-radius: 10px;
-    border: 1px solid var(--glass-border);
-    background: var(--bg-white);
+    border: 1px solid var(glass-border);
+    background: var(bg-white);
     font-size: 0.9rem;
     outline: none;
     cursor: pointer;
-    box-shadow: var(--card-shadow);
+    box-shadow: var(card-shadow);
 }
 
 /* Stats Summary */
@@ -525,11 +525,11 @@ header {
 }
 
 .stat-card {
-    background: var(--bg-white);
+    background: var(bg-white);
     padding: 24px;
     border-radius: 20px;
-    box-shadow: var(--card-shadow);
-    border: 1px solid var(--glass-border);
+    box-shadow: var(card-shadow);
+    border: 1px solid var(glass-border);
     display: flex;
     align-items: center;
     gap: 15px;
@@ -553,23 +553,23 @@ header {
     display: block;
     font-size: 1.5rem;
     font-weight: 700;
-    color: var(--text-dark);
+    color: var(text-dark);
 }
 
 .stat-info .stat-label {
     font-size: 0.85rem;
-    color: var(--text-muted);
+    color: var(text-muted);
     font-weight: 500;
 }
 
 /* Table Styles */
 .table-section {
     margin-bottom: 50px;
-    background: var(--bg-white);
+    background: var(bg-white);
     border-radius: 24px;
     overflow: hidden;
-    box-shadow: var(--card-shadow);
-    border: 1px solid var(--glass-border);
+    box-shadow: var(card-shadow);
+    border: 1px solid var(glass-border);
 }
 
 .table-header {
@@ -600,7 +600,7 @@ th {
     padding: 15px 30px;
     font-size: 0.85rem;
     font-weight: 600;
-    color: var(--text-muted);
+    color: var(text-muted);
     text-transform: uppercase;
     letter-spacing: 0.5px;
 }
@@ -622,7 +622,7 @@ tr.expandable {
 }
 
 tr.expandable:hover {
-    background: var(--bg-light-purple);
+    background: var(bg-light-purple);
 }
 
 /* Status Badges */
@@ -685,7 +685,7 @@ tr.expandable:hover {
 }
 
 .bom-item .ingredient { font-weight: 500; }
-.bom-item .amount { color: var(--text-muted); }
+.bom-item .amount { color: var(text-muted); }
 
 @keyframes fadeInDown {
     from { opacity: 0; transform: translateY(-10px); }
