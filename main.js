@@ -3,24 +3,24 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 1. Data Definitions
     const rawMaterials = [
-        { name: "Whey protein isolate", cost: 1200, location: "Dairy Processors (Punjab)", leadTime: 7, currentStock: 450, status: "sufficient" },
-        { name: "Plant protein powder", cost: 850, location: "Soy/Pea processors (MP)", leadTime: 8, currentStock: 120, status: "low" },
-        { name: "Oats", cost: 80, location: "Grain markets (Punjab/Haryana)", leadTime: 3, currentStock: 800, status: "sufficient" },
-        { name: "Almond flour", cost: 950, location: "Dry Fruit Wholesalers (Mumbai imports)", leadTime: 6, currentStock: 35, status: "critical" },
-        { name: "Cocoa powder", cost: 650, location: "Kerala cocoa processors", leadTime: 5, currentStock: 150, status: "sufficient" },
-        { name: "Dates paste", cost: 250, location: "Rajasthan", leadTime: 4, currentStock: 200, status: "sufficient" },
-        { name: "Chia seeds", cost: 450, location: "Rajasthan farms", leadTime: 5, currentStock: 95, status: "low" },
-        { name: "Vitamin premix", cost: 2500, location: "Nutraceutical suppliers (Hyderabad)", leadTime: 10, currentStock: 15, status: "critical" },
-        { name: "Natural sweeteners", cost: 150, location: "Suppliers from Gujarat", leadTime: 7, currentStock: 300, status: "sufficient" }
+        { name: "Whey protein isolate", cost: 1200, location: "Dairy Processors (Punjab)", leadTime: 7, currentStock: 45, reorderPoint: 60, expiryDays: 90, status: "critical" },
+        { name: "Plant protein powder", cost: 850, location: "Soy/Pea processors (MP)", leadTime: 8, currentStock: 120, reorderPoint: 150, expiryDays: 120, status: "low" },
+        { name: "Oats", cost: 80, location: "Grain markets (Punjab/Haryana)", leadTime: 3, currentStock: 800, reorderPoint: 200, expiryDays: 60, status: "sufficient" },
+        { name: "Almond flour", cost: 950, location: "Dry Fruit Wholesalers (Mumbai imports)", leadTime: 6, currentStock: 35, reorderPoint: 100, expiryDays: 30, status: "critical" },
+        { name: "Cocoa powder", cost: 650, location: "Kerala cocoa processors", leadTime: 5, currentStock: 150, reorderPoint: 100, expiryDays: 180, status: "sufficient" },
+        { name: "Dates paste", cost: 250, location: "Rajasthan", leadTime: 4, currentStock: 200, reorderPoint: 100, expiryDays: 12, batchId: "DP-2305", status: "sufficient" },
+        { name: "Chia seeds", cost: 450, location: "Rajasthan farms", leadTime: 5, currentStock: 95, reorderPoint: 100, expiryDays: 180, status: "low" },
+        { name: "Vitamin premix", cost: 2500, location: "Nutraceutical suppliers (Hyderabad)", leadTime: 10, currentStock: 15, reorderPoint: 30, expiryDays: 200, status: "critical" },
+        { name: "Natural sweeteners", cost: 150, location: "Suppliers from Gujarat", leadTime: 7, currentStock: 300, reorderPoint: 150, expiryDays: 365, status: "sufficient" }
     ];
 
     const products = [
-        { name: "Chocolate Oats Protein Bar", category: "Protein Snacks", demand: 5200, popularity: "High", currentStock: 1200, daysRemaining: 7 },
+        { name: "Chocolate Oats Protein Bar", category: "Protein Snacks", demand: 5200, popularity: "High", currentStock: 450, daysRemaining: 60 },
         { name: "Almond Date Energy Bites", category: "Protein Snacks", demand: 4500, popularity: "High", currentStock: 2500, daysRemaining: 16 },
-        { name: "Protein Oat Cookies", category: "Protein Snacks", demand: 3300, popularity: "Moderate", currentStock: 400, daysRemaining: 3 },
+        { name: "Protein Oat Cookies", category: "Protein Snacks", demand: 3300, popularity: "Moderate", currentStock: 400, daysRemaining: 30 },
         { name: "Kids Oat Nutrition Bar", category: "Kids Nutrition Snacks", demand: 2900, popularity: "Moderate", currentStock: 1800, daysRemaining: 18 },
         { name: "Chocolate Nutrition Bites", category: "Kids Nutrition Snacks", demand: 2600, popularity: "Moderate", currentStock: 350, daysRemaining: 4 },
-        { name: "Low Sugar Nut Bar", category: "Functional Health Snacks", demand: 1800, popularity: "Low", currentStock: 900, daysRemaining: 15 },
+        { name: "Low Sugar Nut Bar", category: "Functional Health Snacks", demand: 1800, popularity: "Low", currentStock: 4200, daysRemaining: 45 },
         { name: "Plant Protein Bar", category: "Functional Health Snacks", demand: 1500, popularity: "Low", currentStock: 50, daysRemaining: 1 },
         { name: "Chia Seed Wellness Bar", category: "Functional Health Snacks", demand: 2400, popularity: "Moderate", currentStock: 1400, daysRemaining: 17 }
     ];
@@ -250,7 +250,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 </div>
             </div>
         `;
-        
+
         // Setup Search and Filter Listeners
         const searchInput = document.getElementById('stock-search');
         const categoryFilter = document.getElementById('filter-category');
@@ -276,7 +276,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const category = row.cells[1].innerText === cat || cat === '';
                 const pill = row.querySelector('.status-pill');
                 const rowStatus = pill.className.includes(stat) || stat === '';
-                
+
                 const visible = text.includes(query) && category && rowStatus;
                 row.style.display = visible ? '' : 'none';
                 if (!visible) nextRow.style.display = 'none';
@@ -290,6 +290,270 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         if (window.lucide) window.lucide.createIcons();
+    }
+
+    function generateAlerts() {
+        const alerts = [];
+        
+        // Raw Material Rules
+        rawMaterials.forEach(rm => {
+            if (rm.currentStock < rm.reorderPoint) {
+                alerts.push({
+                    id: Math.random().toString(36).substr(2, 9),
+                    category: "Raw Material",
+                    type: "Raw Material Shortage",
+                    severity: "Critical",
+                    icon: "alert-triangle",
+                    iconColor: "#dc2626",
+                    item: rm.name,
+                    metrics: `Current Stock: ${rm.currentStock} kg | Reorder Point: ${rm.reorderPoint} kg | Lead Time: ${rm.leadTime} days`,
+                    message: `Stock level is below the reorder threshold. Supplier lead time may cause production delays.`,
+                    action: "Generate purchase order to supplier immediately.",
+                    timestamp: new Date().toISOString()
+                });
+            }
+            
+            if (rm.expiryDays && rm.expiryDays < 15) {
+                alerts.push({
+                    id: Math.random().toString(36).substr(2, 9),
+                    category: "Raw Material",
+                    type: "Expiry Warning",
+                    severity: "Critical",
+                    icon: "clock",
+                    iconColor: "#dc2626",
+                    item: rm.name,
+                    metrics: `Batch ID: ${rm.batchId || 'N/A'} | Expiry Date: ${rm.expiryDays} days remaining`,
+                    message: `This raw material batch is nearing expiry and should be used soon to avoid wastage.`,
+                    action: "Prioritize production batches using this material.",
+                    timestamp: new Date().toISOString()
+                });
+            }
+        });
+
+        // Finished Product Rules
+        products.forEach(p => {
+            if (p.currentStock < p.demand) {
+                alerts.push({
+                    id: Math.random().toString(36).substr(2, 9),
+                    category: "Product",
+                    type: "Product Stock Running Low",
+                    severity: "Warning",
+                    icon: "trending-down",
+                    iconColor: "#d97706",
+                    item: p.name,
+                    metrics: `Current Stock: ${p.currentStock} units | Monthly Demand: ${p.demand} units`,
+                    message: `Available stock may not meet upcoming demand. Production planning may be required.`,
+                    action: "Schedule production batch.",
+                    timestamp: new Date().toISOString()
+                });
+            }
+            
+            if (p.currentStock > p.demand * 2) {
+                alerts.push({
+                    id: Math.random().toString(36).substr(2, 9),
+                    category: "Product",
+                    type: "Excess Inventory Detected",
+                    severity: "Attention",
+                    icon: "package-plus",
+                    iconColor: "#eab308",
+                    item: p.name,
+                    metrics: `Current Stock: ${p.currentStock} units | Monthly Demand: ${p.demand} units`,
+                    message: `Inventory levels exceed expected sales demand. This may increase holding costs.`,
+                    action: "Reduce production or prioritize sales promotions.",
+                    timestamp: new Date().toISOString()
+                });
+            }
+        });
+
+        // System explicit alert
+        alerts.push({
+            id: Math.random().toString(36).substr(2, 9),
+            category: "System",
+            type: "System Update",
+            severity: "Informational",
+            icon: "info",
+            iconColor: "#10b981",
+            item: "Inventory Sync",
+            metrics: "Last Synced: Just now",
+            message: "Inventory data successfully synchronized with warehouse management system.",
+            action: "No action required.",
+            timestamp: new Date().toISOString()
+        });
+
+        return alerts.sort((a,b) => {
+            const severityMap = { "Critical": 4, "Warning": 3, "Attention": 2, "Informational": 1 };
+            return severityMap[b.severity] - severityMap[a.severity];
+        });
+    }
+
+    function renderAlertsPage() {
+        console.log('Rendering Alerts Page');
+        const alerts = generateAlerts();
+        
+        const totalAlerts = alerts.length;
+        const criticalAlerts = alerts.filter(a => a.severity === 'Critical').length;
+        const rmAlerts = alerts.filter(a => a.category === 'Raw Material').length;
+        const productAlerts = alerts.filter(a => a.category === 'Product').length;
+
+        contentArea.innerHTML = `
+            <div class="page-header">
+                <h1 class="page-title">Inventory Alerts</h1>
+                <p class="page-description">Real-time notifications to help manage stock shortages, excess inventory, and product expiration risks.</p>
+            </div>
+
+            <div class="stats-summary alerts-stats">
+                <div class="stat-card">
+                    <div class="stat-icon-box" style="background: #eef2ff; color: #4f46e5;">
+                        <i data-lucide="bell"></i>
+                    </div>
+                    <div class="stat-info">
+                        <span class="stat-value">${totalAlerts}</span>
+                        <span class="stat-label">Total Alerts</span>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon-box" style="background: #fef2f2; color: #dc2626;">
+                        <i data-lucide="alert-triangle"></i>
+                    </div>
+                    <div class="stat-info">
+                        <span class="stat-value">${criticalAlerts}</span>
+                        <span class="stat-label">Critical Alerts</span>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon-box" style="background: #fdf4ff; color: #c026d3;">
+                        <i data-lucide="box"></i>
+                    </div>
+                    <div class="stat-info">
+                        <span class="stat-value">${rmAlerts}</span>
+                        <span class="stat-label">Raw Material Alerts</span>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon-box" style="background: #f0fdf4; color: #16a34a;">
+                        <i data-lucide="package"></i>
+                    </div>
+                    <div class="stat-info">
+                        <span class="stat-value">${productAlerts}</span>
+                        <span class="stat-label">Product Alerts</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="controls-row">
+                <div class="search-container">
+                    <i data-lucide="search" class="search-icon"></i>
+                    <input type="text" class="search-input" placeholder="Search alerts by item or message..." id="alerts-search">
+                </div>
+                <div class="filters-group">
+                    <select class="filter-select" id="filter-alerts-severity">
+                        <option value="">All Severities</option>
+                        <option value="Critical">🔴 Critical</option>
+                        <option value="Warning">🟠 Warning</option>
+                        <option value="Attention">🟡 Attention</option>
+                        <option value="Informational">🟢 Informational</option>
+                    </select>
+                    <select class="filter-select" id="filter-alerts-category">
+                        <option value="">All Categories</option>
+                        <option value="Raw Material">Raw Material</option>
+                        <option value="Product">Product</option>
+                        <option value="System">System</option>
+                    </select>
+                    <select class="filter-select" id="sort-alerts">
+                        <option value="critical">Most Critical</option>
+                        <option value="newest">Newest Alerts</option>
+                        <option value="name">Item Name</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="alerts-container" id="alerts-list">
+                ${renderAlertCards(alerts)}
+            </div>
+        `;
+        
+        // Setup Search and Filter Listeners for Alerts
+        const searchInput = document.getElementById('alerts-search');
+        const severityFilter = document.getElementById('filter-alerts-severity');
+        const categoryFilter = document.getElementById('filter-alerts-category');
+        const sortSelect = document.getElementById('sort-alerts');
+        const alertsList = document.getElementById('alerts-list');
+
+        const updateAlerts = () => {
+            const query = searchInput.value.toLowerCase();
+            const severity = severityFilter.value;
+            const category = categoryFilter.value;
+            const sort = sortSelect.value;
+            
+            let filtered = alerts.filter(a => {
+                const matchQuery = a.item.toLowerCase().includes(query) || a.message.toLowerCase().includes(query) || a.type.toLowerCase().includes(query);
+                const matchSev = severity === '' || a.severity === severity;
+                const matchCat = category === '' || a.category === category;
+                return matchQuery && matchSev && matchCat;
+            });
+            
+            filtered.sort((a,b) => {
+                if(sort === 'critical') {
+                    const sev = { "Critical": 4, "Warning": 3, "Attention": 2, "Informational": 1 };
+                    return sev[b.severity] - sev[a.severity];
+                } else if(sort === 'name') {
+                    return a.item.localeCompare(b.item);
+                } else {
+                    return new Date(b.timestamp) - new Date(a.timestamp);
+                }
+            });
+
+            alertsList.innerHTML = renderAlertCards(filtered);
+            if (window.lucide) window.lucide.createIcons();
+        };
+
+        if (searchInput) {
+            searchInput.addEventListener('input', updateAlerts);
+            severityFilter.addEventListener('change', updateAlerts);
+            categoryFilter.addEventListener('change', updateAlerts);
+            sortSelect.addEventListener('change', updateAlerts);
+        }
+
+        if (window.lucide) window.lucide.createIcons();
+    }
+
+    function renderAlertCards(alertsList) {
+        if(alertsList.length === 0) {
+            return `<div class="empty-state" style="text-align:center; padding: 40px; color: var(--text-muted);">No alerts found matching your criteria.</div>`;
+        }
+        
+        return alertsList.map(alert => `
+            <div class="alert-card severity-${alert.severity.toLowerCase()}">
+                <div class="alert-icon" style="background-color: ${alert.iconColor}20; color: ${alert.iconColor};">
+                    <i data-lucide="${alert.icon}"></i>
+                </div>
+                <div class="alert-content">
+                    <div class="alert-header">
+                        <div class="alert-title-group">
+                            <span class="alert-type">${alert.type}</span>
+                            ${getSeverityBadge(alert.severity)}
+                        </div>
+                        <span class="alert-time">Just now</span>
+                    </div>
+                    <h3 class="alert-item-name">${alert.item}</h3>
+                    <div class="alert-metrics">${alert.metrics}</div>
+                    <p class="alert-message">${alert.message}</p>
+                    <div class="alert-action">
+                        <strong>Suggested Action:</strong> ${alert.action}
+                    </div>
+                </div>
+            </div>
+        `).join('');
+    }
+
+    function getSeverityBadge(severity) {
+        const icons = {
+            "Critical": "🔴",
+            "Warning": "🟠",
+            "Attention": "🟡",
+            "Informational": "🟢"
+        };
+        return `<span class="severity-badge badge-${severity.toLowerCase()}">${icons[severity]} ${severity}</span>`;
     }
 
     function renderBlankPage(title) {
@@ -306,7 +570,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // 4. Router Configuration
     const routes = {
         '#stock-tracking': renderStockTracking,
-        '#alerts': () => renderBlankPage('Alerts'),
+        '#alerts': renderAlertsPage,
         '#dashboard': () => renderBlankPage('Dashboard'),
         '#order-history': () => renderBlankPage('Order History'),
         '#profile': () => renderBlankPage('Supplier User Profile')
@@ -315,7 +579,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function handleRouting() {
         const hash = window.location.hash || '#stock-tracking';
         console.log('Routing to:', hash);
-        
+
         navItems.forEach(item => {
             if (item.getAttribute('href') === hash) {
                 item.classList.add('active');
@@ -343,7 +607,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 5. Global Event Listeners & Execution
     window.addEventListener('hashchange', handleRouting);
-    
+
     userProfileBtn.addEventListener('click', (e) => {
         e.stopPropagation();
         window.location.hash = '#profile';
@@ -363,7 +627,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const expandedRow = row.nextElementSibling;
         const icon = row.querySelector('.expand-icon');
         const isActive = expandedRow.classList.contains('active');
-        
+
         document.querySelectorAll('.expanded-row.active').forEach(r => {
             if (r !== expandedRow) {
                 r.classList.remove('active');
