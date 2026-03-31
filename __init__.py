@@ -1,6 +1,6 @@
 import os
 from flask import Flask, render_template, request
-
+from . import db
 def create_app(test_config=None):
     app=Flask(__name__, instance_relative_config=True)
     app.config.from_mapping(
@@ -17,10 +17,12 @@ def create_app(test_config=None):
     except OSError:
         pass
 
-    from . import db
     db.init_app(app)
 
     return app
+    
+if __name__ == '__main__':
+    create_app()
 
 
 

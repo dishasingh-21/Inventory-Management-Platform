@@ -15,8 +15,8 @@ CREATE TABLE finished_goods(
     volume_sold_over_years INTEGER NOT NULL,
     unit_cost REAL,
     dollar_volume REAL,
-    dollar_volume_%ge REAL,
-    cumulative_%dollar_volume REAL,
+    dollar_volume_percentage REAL,
+    cumulative_percentage_dollar_volume REAL,
     demand_per_day REAL,
     batch_size INTEGER,
     time_to_produce_one_batch INTEGER,
@@ -35,8 +35,8 @@ CREATE TABLE raw_materials(
     demand_per_day REAL NOT NULL,
     annual_demand REAL NOT NULL,
     annual_comsumption_value REAL NOT NULL,
-    consumption_%ge REAL NOT NULL,
-    cumulative_%consumption REAL NOT NULL,
+    consumption_percentage REAL NOT NULL,
+    cumulative_percentage_consumption REAL NOT NULL,
     class TEXT NOT NULL
 );
 CREATE TABLE product_material_map(
