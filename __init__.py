@@ -18,6 +18,11 @@ def create_app(test_config=None):
         pass
 
     db.init_app(app)
+    @app.route('/')
+    def home():
+        return render_template('index.html')
+    def dashboard():
+        return render_template('dashboard.html')
 
     return app
     
