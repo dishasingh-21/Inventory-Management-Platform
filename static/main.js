@@ -556,6 +556,19 @@ document.addEventListener('DOMContentLoaded', () => {
         return `<span class="severity-badge badge-${severity.toLowerCase()}">${icons[severity]} ${severity}</span>`;
     }
 
+    // function renderDashboardPage{
+    //     contentArea.innerHTML=`
+    //         <h2>Product Performance</h2>
+    //         <select id="selectProduct"></select>
+    //         <canvas id="chart"></canvas>
+    //     `
+    //     initialize_Dashboard();
+    // }
+
+    // function initialize_Dashboard{
+
+    // }
+
     function renderBlankPage(title) {
         console.log('Rendering Blank Page:', title);
         contentArea.innerHTML = `
@@ -571,7 +584,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const routes = {
         '#stock-tracking': renderStockTracking,
         '#alerts': renderAlertsPage,
-        '#dashboard': () => renderBlankPage('Dashboard'),
+        '#dashboard': renderDashboardPage,
         '#order-history': () => renderBlankPage('Order History'),
         '#profile': () => renderBlankPage('Supplier User Profile')
     };
