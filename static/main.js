@@ -556,19 +556,62 @@ document.addEventListener('DOMContentLoaded', () => {
         return `<span class="severity-badge badge-${severity.toLowerCase()}">${icons[severity]} ${severity}</span>`;
     }
 
-    // function renderDashboardPage{
-    //     contentArea.innerHTML=`
-    //         <h2>Product Performance</h2>
-    //         <select id="selectProduct"></select>
-    //         <canvas id="chart"></canvas>
-    //     `
-    //     initialize_Dashboard();
-    // }
+    function renderDashboardPage(){
+        contentArea.innerHTML=`
+            <h2>Product Performance</h2>
+            <select id="selectProduct"></select>
+            <canvas id="chart"></canvas>
+        `;
+        initialize_Dashboard();
+    }
 
-    // function initialize_Dashboard{
+    function initialize_Dashboard(){
+        const select = document.getElementById("selectProduct");
+        fetch("/api/products")
+        .then(res=>res.json())
+        .then(products=>{
+            products.forEach(p=>{
+                const option=document.createElement("option");
+                option.value=p;
+                option.textContent=p;
+                select.appendChild(option);
+            });
+            loadAll(products[0]);
+            select.addEventListener("change",()=>{
+                loadAll(select.value);
+            });
+        });
+    }
+    let chart;
+    function loadGraph(product){
+        fetch(`/api/product-sales/${product}`)
+        .then(res=>res.json())
+        .then(data=>{
+            const labels=data.map(d=>d.dates);
+            const values=data.map(d=>d.quantity_sold);
+            if(chart){
+                chart.data.labels=labels;
+                chart.data.datasets[0].data=values;
+                chart.update();
+            }
+            else{
+                chart = new Chart(document.getElementById("chart"),{
+                    type:"line",
+                    data:{
+                        labels:labels,
+                        datasets:[{
+                            label:"Quantity Sold",
+                            data: values
+                        }]
+                    }
+                });
+            }
+        });
+    }
 
-    // }
-
+    function loadAll(product){
+        loadGraph(product);
+    }
     function renderBlankPage(title) {
         console.log('Rendering Blank Page:', title);
         contentArea.innerHTML = `
