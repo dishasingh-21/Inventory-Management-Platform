@@ -3,15 +3,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 1. Data Definitions
     const rawMaterials = [
-        { name: "Whey protein isolate", cost: 1200, location: "Dairy Processors (Punjab)", leadTime: 7, currentStock: 45, reorderPoint: 60, expiryDays: 90, status: "critical" },
-        { name: "Plant protein powder", cost: 850, location: "Soy/Pea processors (MP)", leadTime: 8, currentStock: 120, reorderPoint: 150, expiryDays: 120, status: "low" },
-        { name: "Oats", cost: 80, location: "Grain markets (Punjab/Haryana)", leadTime: 3, currentStock: 800, reorderPoint: 200, expiryDays: 60, status: "sufficient" },
-        { name: "Almond flour", cost: 950, location: "Dry Fruit Wholesalers (Mumbai imports)", leadTime: 6, currentStock: 35, reorderPoint: 100, expiryDays: 30, status: "critical" },
-        { name: "Cocoa powder", cost: 650, location: "Kerala cocoa processors", leadTime: 5, currentStock: 150, reorderPoint: 100, expiryDays: 180, status: "sufficient" },
-        { name: "Dates paste", cost: 250, location: "Rajasthan", leadTime: 4, currentStock: 200, reorderPoint: 100, expiryDays: 12, batchId: "DP-2305", status: "sufficient" },
-        { name: "Chia seeds", cost: 450, location: "Rajasthan farms", leadTime: 5, currentStock: 95, reorderPoint: 100, expiryDays: 180, status: "low" },
-        { name: "Vitamin premix", cost: 2500, location: "Nutraceutical suppliers (Hyderabad)", leadTime: 10, currentStock: 15, reorderPoint: 30, expiryDays: 200, status: "critical" },
-        { name: "Natural sweeteners", cost: 150, location: "Suppliers from Gujarat", leadTime: 7, currentStock: 300, reorderPoint: 150, expiryDays: 365, status: "sufficient" }
+        { name: "Whey protein isolate", cost: 1200, location: "Dairy Processors (Punjab)", leadTime: 7, currentStock: 45, reorderPoint: 91.812, expiryDays: 90, status: "critical" },
+        { name: "Plant protein powder", cost: 850, location: "Soy/Pea processors (MP)", leadTime: 8, currentStock: 120, reorderPoint: 58.08, expiryDays: 120, status: "low" },
+        { name: "Oats", cost: 80, location: "Grain markets (Punjab/Haryana)", leadTime: 3, currentStock: 800, reorderPoint: 107.0784, expiryDays: 60, status: "sufficient" },
+        { name: "Almond flour", cost: 950, location: "Dry Fruit Wholesalers (Mumbai imports)", leadTime: 6, currentStock: 35, reorderPoint: 135.3024, expiryDays: 30, status: "critical" },
+        { name: "Cocoa powder", cost: 650, location: "Kerala cocoa processors", leadTime: 5, currentStock: 150, reorderPoint: 46.392, expiryDays: 180, status: "sufficient" },
+        { name: "Dates paste", cost: 250, location: "Rajasthan", leadTime: 4, currentStock: 200, reorderPoint: 74.592, expiryDays: 12, batchId: "DP-2305", status: "sufficient" },
+        { name: "Chia seeds", cost: 450, location: "Rajasthan farms", leadTime: 5, currentStock: 95, reorderPoint: 50.112, expiryDays: 180, status: "low" },
+        { name: "Vitamin premix", cost: 2500, location: "Nutraceutical suppliers (Hyderabad)", leadTime: 10, currentStock: 15, reorderPoint: 36.396, expiryDays: 200, status: "critical" },
+        { name: "Natural sweeteners", cost: 150, location: "Suppliers from Gujarat", leadTime: 7, currentStock: 300, reorderPoint: 44.1588, expiryDays: 365, status: "sufficient" }
     ];
 
     const products = [
