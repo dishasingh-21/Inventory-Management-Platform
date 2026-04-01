@@ -24,7 +24,7 @@ def init_db():
     with current_app.open_resource('schema.sql') as f:
         db.executescript(f.read().decode('utf8'))
     
-    with open('project/data/sales.csv', newline='',encoding='utf-8') as f:
+    with open('data/sales.csv', newline='',encoding='utf-8') as f:
         db=get_db()
         reader=csv.reader(f)
         columns=next(reader)
@@ -35,7 +35,7 @@ def init_db():
             )
             db.commit()
 
-    with open('project/data/finished_goods.csv', newline='', encoding='utf-8') as f:
+    with open('data/finished_goods.csv', newline='', encoding='utf-8') as f:
         db=get_db()
         reader=csv.reader(f)
         columns=next(reader)
@@ -46,7 +46,7 @@ def init_db():
             )
             db.commit()
     
-    with open('project/data/raw_materials.csv', newline='', encoding='utf-8') as f:
+    with open('data/raw_materials.csv', newline='', encoding='utf-8') as f:
         db=get_db()
         reader=csv.reader(f)
         columns=next(reader)
@@ -57,7 +57,7 @@ def init_db():
             )
             db.commit()
 
-    with open('project/data/product_material_map.csv', newline='', encoding='utf-8') as f:
+    with open('data/product_material_map.csv', newline='', encoding='utf-8') as f:
         db=get_db()
         reader=csv.reader(f)
         columns=next(reader)
