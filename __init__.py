@@ -84,6 +84,15 @@ def create_app(test_config=None):
             result[Class]["count"]+=1
         return jsonify(list(result.values()))
     
+    #API to fetch suitable data for plotting EPQ graph of each finished good
+    @app.route('/api/data-for-plotting-EPQ-graph/<product>')
+    def epq_data(product):
+        conn=db.get_db()
+        data=conn.execute(
+            'SELECT demand_per_day, production_rate_per_day, time_to_produce_one_batch FROM finished_goods WHERE product=?', (product,)
+        ).fetchall()
+        return jsonify([dict(row) for row in data])
+
     #API to calculate Economic Production Quantity of a finished_good
     @app.route('/api/EPQ/<product>')
     def economic_production_quantity(product):

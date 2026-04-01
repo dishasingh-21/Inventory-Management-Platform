@@ -610,6 +610,11 @@ document.addEventListener('DOMContentLoaded', () => {
                     </table>
                 </div>
             </div>
+            <!--<h2>Economic Production Quantity</h2>
+            <select id="select-product"></select>
+            <div class="chart-box">
+                <canvas id="epq-chart"></chart>
+            </div>-->
         `;
         initialize_Dashboard();
     }
@@ -676,7 +681,34 @@ document.addEventListener('DOMContentLoaded', () => {
                 tableBody.appendChild(row);
             });
         });
+
+        // const select_epq=document.getElementById("select-product")
+        // fetch("/api/abc-analysis/finished-goods")
+        // .then(res=>res.json())
+        // .then(products=>{
+        //     products.forEach(product=>{
+        //         const option=document.createElement("option");
+        //         option.value=product;
+        //         option.textContent=product;
+        //         select_epq.appendChild(option);
+        //     });
+        //     loadAllEpqCharts(products[0]);
+        //     select_epq.addEventListener("change", ()=>{
+        //         loadAllEpqCharts(select_epq.value);
+        //     })
+        // });
     }
+    // function loadEpqChart(d,p,Time_to_produce_one_batch,product){
+    //     fetch(`/api/data-for-plotting-EPQ-graph/${product}`)
+    //     .then(res=>res.json())
+    //     .then(data=>{
+
+    //     })
+        
+    // }
+    // function loadAllEpqCharts(product){
+    //     loadEpqChart(product);
+    // }
     let chart;
     function loadGraph(product){
         fetch(`/api/product-sales/${product}`)
@@ -756,7 +788,6 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     }
-
     function loadAll(product){
         loadGraph(product);
     }
