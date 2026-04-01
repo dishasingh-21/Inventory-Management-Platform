@@ -13,6 +13,9 @@ def create_app(test_config=None):
     else:
         app.config.from_mapping(test_config)
 
+    with app.app_context():
+        db.init_db()
+
     try:
         os.makedirs(app.instance_path)
     except OSError:
