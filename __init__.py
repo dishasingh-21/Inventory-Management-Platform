@@ -1,6 +1,6 @@
 import os
 from flask import Flask, render_template, request, jsonify
-import db
+from . import db
 import math
 def create_app(test_config=None):
     app=Flask(__name__, instance_relative_config=True)
@@ -102,7 +102,9 @@ def create_app(test_config=None):
         data=conn.execute(
             'SELECT epq FROM finished_goods WHERE product=?',(product,)
         ).fetchone()
-        epq=data["epq"]
+        epq=0
+        for row in data:
+            epq=row["epq"]
         return jsonify({"EPQ":epq})
 
 

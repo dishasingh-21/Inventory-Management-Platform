@@ -683,16 +683,17 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         const select_epq=document.getElementById("select-product")
-        fetch("/api/products")
+        fetch("/api/abc-analysis/finished-goods")
         .then(res=>res.json())
         .then(products=>{
             products.forEach(product=>{
+                const product_name=product.product;
                 const option=document.createElement("option");
-                option.value=product;
-                option.textContent=product;
+                option.value=product_name;
+                option.textContent=product_name;
                 select_epq.appendChild(option);
             });
-            loadAllEpqCharts(products[0]);
+            loadAllEpqCharts(products[0].product);
             select_epq.addEventListener("change", ()=>{
                 loadAllEpqCharts(select_epq.value);
             })
@@ -707,8 +708,8 @@ document.addEventListener('DOMContentLoaded', () => {
         let inventory=0;
         for(let c=0; c<cycles; c++){
             const t_production=time_to_produce_one_batch;
-            for(let i=0; i<20; i++){
-                let curr_time=t+(i/20)*t_production;
+            for(let i=0; i<40; i++){
+                let curr_time=t+(i/40)*t_production;
                 let inv=inventory+(p-d)*(curr_time-t);
                 labels.push(Number(curr_time.toFixed(2)));
                 values.push(Number(inv.toFixed(2)));
@@ -716,8 +717,8 @@ document.addEventListener('DOMContentLoaded', () => {
             inventory=values[values.length-1];
             t+=t_production;
             const t_consume=inventory/d;
-            for(let i=0; i<20; i++){
-                let curr_time=t+(i/20)*t_consume;
+            for(let i=0; i<40; i++){
+                let curr_time=t+(i/40)*t_consume;
                 let inv=inventory-d*(curr_time-t);
                 labels.push(Number(curr_time.toFixed(2)));
                 values.push(Number(inv.toFixed(2)));
@@ -764,7 +765,6 @@ document.addEventListener('DOMContentLoaded', () => {
                                 backgroundColor: gradient,
                                 borderColor:"#ec2161",
                                 tension:0,
-                                pointRadius:2
                             }]
                         },
                         options:{
