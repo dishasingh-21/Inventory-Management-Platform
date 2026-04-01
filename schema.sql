@@ -24,7 +24,8 @@ CREATE TABLE finished_goods(
     Average_yearly_demand REAL,
     setup_cost REAL,
     holding_cost REAL,
-    class TEXT NOT NULL
+    class TEXT NOT NULL,
+    epq REAL NOT NULL
 );
 CREATE TABLE raw_materials(
     id INTEGER PRIMARY KEY AUTOINCREMENT,
