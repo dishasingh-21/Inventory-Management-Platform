@@ -560,7 +560,9 @@ document.addEventListener('DOMContentLoaded', () => {
         contentArea.innerHTML=`
             <h2>Product Performance</h2>
             <select id="selectProduct"></select>
-            <canvas id="chart"></canvas>
+            <div class="chart-box">
+                <canvas id="chart"></canvas>
+            </div>
         `;
         initialize_Dashboard();
     }
@@ -595,14 +597,67 @@ document.addEventListener('DOMContentLoaded', () => {
                 chart.update();
             }
             else{
+                const chrt = document.getElementById("chart").getContext('2d')
+                const gradient = chrt.createLinearGradient(0,0,0,400);
+                gradient.addColorStop(0, 'rgba(54, 87, 235, 0.6)');
+                gradient.addColorStop(1, 'rgba(54,162,235,0.05)');
                 chart = new Chart(document.getElementById("chart"),{
                     type:"line",
                     data:{
                         labels:labels,
                         datasets:[{
                             label:"Quantity Sold",
-                            data: values
+                            data: values,
+                            backgroundColor: gradient,
+                            borderColor: '#3639eb',
+                            fill: true,
+                            tension: 0.4,
+                            pointRadius: 4,
+                            pointHoverRadius: 6
                         }]
+                    },
+                    options:{
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        interaction:{
+                            mode:'index',
+                            intersect:false
+                        },
+                        plugins:{
+                            legend:{
+                                position: 'top',
+                                labels:{
+                                    color:'#333',
+                                    font:{
+                                        size:14
+                                    }
+                                }
+                            },
+                            tooltip:{
+                                enabled:true,
+                                backgroundColor:"#222",
+                                titleColor: '#fff',
+                                bodyColor: '#fff',
+                                padding: 10,
+                                cornerRadius: 6
+                            }
+                        },
+                        scales:{
+                            x:{
+                                title:{
+                                    display:true,
+                                    text:'Year',
+                                    color:'#333'
+                                }
+                            },
+                            y:{
+                                title:{
+                                    display:true,
+                                    text:'Quantity sold',
+                                    color:'#333'
+                                }
+                            }
+                        }
                     }
                 });
             }
