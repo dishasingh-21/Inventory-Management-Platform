@@ -713,6 +713,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const time=row.time_to_produce_one_batch;
                 const D=row.Average_yearly_demand;
                 const epq=getEpqDatapoints(Q_star,d,p,time,D);
+                console.log("EPQ POINTS:", epq);
                 const labels=epq.labels;
                 const values=epq.values;
                 if(epq_chart){
