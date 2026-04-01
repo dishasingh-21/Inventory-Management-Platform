@@ -707,7 +707,7 @@ document.addEventListener('DOMContentLoaded', () => {
             fetch(`/api/data-for-plotting-EPQ-graph/${product}`)
             .then(res=>res.json())
             .then(data=>{
-                const row=data[0];
+                const row=data;
                 const p=row.production_rate_per_day;
                 const d=row.demand_per_day;
                 const time=row.time_to_produce_one_batch;

@@ -93,7 +93,7 @@ def create_app(test_config=None):
         data=conn.execute(
             'SELECT demand_per_day, production_rate_per_day, time_to_produce_one_batch, Average_yearly_demand FROM finished_goods WHERE product=?', (product,)
         ).fetchone()
-        return jsonify([dict(row) for row in data])
+        return jsonify(dict(data))
 
     #API to calculate Economic Production Quantity of a finished_good
     @app.route('/api/EPQ/<product>')
