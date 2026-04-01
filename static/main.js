@@ -683,7 +683,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         const select_epq=document.getElementById("select-product")
-        fetch("/api/abc-analysis/finished-goods")
+        fetch("/api/products")
         .then(res=>res.json())
         .then(products=>{
             products.forEach(product=>{
