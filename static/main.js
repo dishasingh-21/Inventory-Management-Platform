@@ -724,7 +724,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     const gradient = chrt.createLinearGradient(0,0,0,400);
                     gradient.addColorStop(0, 'rgba(246, 30, 113, 0.6)');
                     gradient.addColorStop(1, 'rgba(235, 54, 133, 0.05)');
-                    chart=new Chart(document.getElementById("epq-chart"),{
+                    epq_chart=new Chart(document.getElementById("epq-chart"),{
                         type:"line",
                         data:{
                             labels:labels,
