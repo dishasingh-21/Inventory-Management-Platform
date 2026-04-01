@@ -610,11 +610,11 @@ document.addEventListener('DOMContentLoaded', () => {
                     </table>
                 </div>
             </div>
-            <!--<h2>Economic Production Quantity</h2>
+            <h2>Economic Production Quantity</h2>
             <select id="select-product"></select>
             <div class="chart-box">
                 <canvas id="epq-chart"></chart>
-            </div>-->
+            </div>
         `;
         initialize_Dashboard();
     }
@@ -682,33 +682,141 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         });
 
-        // const select_epq=document.getElementById("select-product")
-        // fetch("/api/abc-analysis/finished-goods")
-        // .then(res=>res.json())
-        // .then(products=>{
-        //     products.forEach(product=>{
-        //         const option=document.createElement("option");
-        //         option.value=product;
-        //         option.textContent=product;
-        //         select_epq.appendChild(option);
-        //     });
-        //     loadAllEpqCharts(products[0]);
-        //     select_epq.addEventListener("change", ()=>{
-        //         loadAllEpqCharts(select_epq.value);
-        //     })
-        // });
+        const select_epq=document.getElementById("select-product")
+        fetch("/api/abc-analysis/finished-goods")
+        .then(res=>res.json())
+        .then(products=>{
+            products.forEach(product=>{
+                const option=document.createElement("option");
+                option.value=product;
+                option.textContent=product;
+                select_epq.appendChild(option);
+            });
+            loadAllEpqCharts(products[0]);
+            select_epq.addEventListener("change", ()=>{
+                loadAllEpqCharts(select_epq.value);
+            })
+        });
     }
-    // function loadEpqChart(d,p,Time_to_produce_one_batch,product){
-    //     fetch(`/api/data-for-plotting-EPQ-graph/${product}`)
-    //     .then(res=>res.json())
-    //     .then(data=>{
-
-    //     })
+    let epq_chart;
+    function loadEpqChart(product){
+        fetch(`/api/EPQ/${product}`)
+        .then(res=>res.json())
+        .then(epqVal => {
+            const Q_star=epqVal.EPQ;
+            fetch(`/api/data-for-plotting-EPQ-graph/${product}`)
+            .then(res=>res.json())
+            .then(data=>{
+                const p=data.production_rate_per_day;
+                const d=data.demand_per_day;
+                const time=data.time_to_produce_one_batch;
+                const D=data.Average_yearly_demand;
+                const epq=getEpqDatapoints(Q_star,D,p,time,D);
+                const labels=epq.labels;
+                const values=epq.values;
+                if(epq_chart){
+                    epq_chart.data.labels=labels;
+                    epq_chart.data.datasets[0].data=values;
+                    epq_chart.update();
+                }
+                else{
+                    const chrt=document.getElementById("epq-chart").getContext("2d");
+                    const gradient = chrt.createLinearGradient(0,0,0,400);
+                    gradient.addColorStop(0, 'rgba(246, 30, 113, 0.6)');
+                    gradient.addColorStop(1, 'rgba(235, 54, 133, 0.05)');
+                    chart=new Chart(document.getElementById("epq-chart"),{
+                        type:"line",
+                        data:{
+                            labels:labels,
+                            datasets:[{
+                                label: "Economic Production Quantity",
+                                data: values,
+                                backgroundColor: gradient,
+                                borderColor:"#ec2161",
+                                tension:0,
+                                pointRadius:2
+                            }]
+                        },
+                        options:{
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            interaction:{
+                                mode:'index',
+                                intersect:false
+                            },
+                            plugins:{
+                                legend:{
+                                    position: 'top',
+                                    labels:{
+                                        color:'#333',
+                                        font:{
+                                            size:14
+                                        }
+                                    }
+                                },
+                                tooltip:{
+                                    enabled:true,
+                                    backgroundColor:"#222",
+                                    titleColor: '#fff',
+                                    bodyColor: '#fff',
+                                    padding: 10,
+                                    cornerRadius: 6
+                                }
+                            },
+                            scales:{
+                                x:{
+                                    title:{
+                                        display:true,
+                                        text:'Time (in minutes)',
+                                        color:'#333'
+                                    }
+                                },
+                                y:{
+                                    title:{
+                                        display:true,
+                                        text:'Inventory Level',
+                                        color:'#333'
+                                    }
+                                }
+                            }
+                        }
+                    });
+                }
+            });
+        });
         
-    // }
-    // function loadAllEpqCharts(product){
-    //     loadEpqChart(product);
-    // }
+    }
+    function getEpqDatapoints(Q_star,d,p,time_to_produce_one_batch,D){
+        const cycles=round(D/Q_star);
+        const labels=[];
+        const values=[];
+        let t=0;
+        let inventory=0;
+        for(let c=0; c<cycles; c++){
+            const t_production=time_to_produce_one_batch;
+            for(let i=0; i<20; i++){
+                let time=t+(i/20)*t_production;
+                let inv=inventory+(p-d)*(time-t);
+                labels.push(Number(time.toFixed(2)));
+                values.push(Number(inv.toFixed(2)));
+            }
+            inventory=values[values.size()-1];
+            t+=t_production;
+            const t_consume=inventory/d;
+            for(let i=0; i<20; i++){
+                let time=t+(i/20)*t_consume;
+                let inv=inventory-d*(time-t);
+                labels.push(Number(time.toFixed(2)));
+                values.push(Number(inv.toFixed(2)));
+            }
+            inventory=values[values.back()-1];
+            t+=t_consume;
+        }
+        return {labels, values};
+    }
+    function loadAllEpqCharts(product){
+        loadEpqChart(product);
+    }
     let chart;
     function loadGraph(product){
         fetch(`/api/product-sales/${product}`)
@@ -722,7 +830,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 chart.update();
             }
             else{
-                const chrt = document.getElementById("chart").getContext('2d')
+                const chrt = document.getElementById("chart").getContext("2d");
                 const gradient = chrt.createLinearGradient(0,0,0,400);
                 gradient.addColorStop(0, 'rgba(54, 87, 235, 0.6)');
                 gradient.addColorStop(1, 'rgba(54,162,235,0.05)');

@@ -91,7 +91,7 @@ def create_app(test_config=None):
     def epq_data(product):
         conn=db.get_db()
         data=conn.execute(
-            'SELECT demand_per_day, production_rate_per_day, time_to_produce_one_batch FROM finished_goods WHERE product=?', (product,)
+            'SELECT demand_per_day, production_rate_per_day, time_to_produce_one_batch, Average_yearly_demand FROM finished_goods WHERE product=?', (product,)
         ).fetchall()
         return jsonify([dict(row) for row in data])
 
