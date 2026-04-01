@@ -101,8 +101,8 @@ def create_app(test_config=None):
         conn = db.get_db()
         data=conn.execute(
             'SELECT Average_yearly_demand,setup_cost,holding_cost,demand_per_day,production_rate_per_day FROM finished_goods WHERE product=?',(product,)
-        ).fetchall()
-        D=data["Average_yearly_deman"]
+        ).fetchone()
+        D=data["Average_yearly_demand"]
         Cs=data["setup_cost"]
         Ch=data["holding_cost"]
         d=data["demand_per_day"]
