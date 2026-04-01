@@ -92,7 +92,7 @@ def create_app(test_config=None):
         conn=db.get_db()
         data=conn.execute(
             'SELECT demand_per_day, production_rate_per_day, time_to_produce_one_batch, Average_yearly_demand FROM finished_goods WHERE product=?', (product,)
-        ).fetchall()
+        ).fetchone()
         return jsonify([dict(row) for row in data])
 
     #API to calculate Economic Production Quantity of a finished_good
