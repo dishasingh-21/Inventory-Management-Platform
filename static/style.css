@@ -836,3 +836,13 @@ tr.expandable:hover {
 .chart-box canvas{
     height: 100% !important;
 }
+
+.classA{
+    background: rgb(233, 146, 169);
+}
+.classB{
+    background: rgb(251, 251, 182);
+}
+.classC{
+    background: rgb(176, 246, 173);
+}

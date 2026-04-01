@@ -50,7 +50,7 @@ def create_app(test_config=None):
         data=conn.execute(
             'SELECT * FROM finished_goods'
         ).fetchall()
-        return jsonify([dict(row)] for row in data)
+        return jsonify([dict(row) for row in data])
 
     #API for ABC Analysis of raw_materials
     @app.route('/api/abc-analysis/raw_materials')
@@ -59,7 +59,7 @@ def create_app(test_config=None):
         data=conn.execute(
             'SELECT * FROM raw_materials'
         ).fetchall()
-        return jsonify([dict(row)] for row in data)
+        return jsonify([dict(row) for row in data])
     
     #API for counting no. of products/raw_materials in each class along with their names
     @app.route('/api/abc-analysis-summary/<type>')

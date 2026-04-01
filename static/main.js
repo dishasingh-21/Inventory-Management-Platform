@@ -558,10 +558,57 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function renderDashboardPage(){
         contentArea.innerHTML=`
-            <h2>Product Performance</h2>
+            <h2>Product Performance</h2><br>
             <select id="selectProduct"></select>
             <div class="chart-box">
                 <canvas id="chart"></canvas>
+            </div>
+            <h2>ABC Analysis</h2><br>
+            <div class="table-section">
+                <div class="table-header">
+                    <h3>Finished goods</h3>
+                </div>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Product Name</th>
+                                <th>Total volume sold over years</th>
+                                <th>Unit Cost</th>
+                                <th>Dollar Volume</th>
+                                <th>%ge Dollar Volume</th>
+                                <th>Cumulative %ge Dollar Volume</th>
+                                <th>Class</th>
+                            </tr>
+                        </thead>
+                        <tbody id="table-body">
+                            <!-- Table Body will be dynamically loaded here by the initialize_dashboard function.-->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="table-section">
+                <div class="table-header">
+                    <h3>Raw Materials</h3>
+                </div>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Raw material</th>
+                                <th>Annual Demand (in grams)</th>
+                                <th>Cost (per gram)</th>
+                                <th>Annual Consumption Value</th>
+                                <th>%ge consumption</th>
+                                <th>Cumulative %ge consumption</th>
+                                <th>Class</th>
+                            </tr>
+                        </thead>
+                        <tbody id="table-body2">
+                            <!-- Table body will be loaded here dynamically by initialise_dashboard function in main.js -->
+                        </tbody>
+                    </table>
+                </div>
             </div>
         `;
         initialize_Dashboard();
@@ -581,6 +628,52 @@ document.addEventListener('DOMContentLoaded', () => {
             loadAll(products[0]);
             select.addEventListener("change",()=>{
                 loadAll(select.value);
+            });
+        });
+
+        fetch("/api/abc-analysis/finished-goods")
+        .then(res=>res.json())
+        .then(products=>{
+            const tableBody=document.getElementById("table-body");
+            products.forEach(product=>{
+                const row=document.createElement("tr");
+                let importance="";
+                if(product.class==="A") importance="classA";
+                else if(product.class==="B") importance="classB";
+                else importance="classC";
+                row.innerHTML=`
+                    <td>${product.product}</td>
+                    <td>${product.volume_sold_over_years}</td>
+                    <td>${product.unit_cost}</td>
+                    <td>${product.dollar_volume}</td>
+                    <td>${product.dollar_volume_percentage}</td>
+                    <td>${product.cumulative_percentage_dollar_volume}</td>
+                    <td class="${importance}">${product.class}</td>
+                `
+                tableBody.appendChild(row);
+            });
+        });
+
+        fetch("/api/abc-analysis/raw_materials")
+        .then(res=>res.json())
+        .then(materials=>{
+            const tableBody = document.getElementById("table-body2");
+            materials.forEach(material=>{
+                const row=document.createElement("tr");
+                let importance="";
+                if(material.class==="A") importance="classA";
+                else if(material.class==="B") importance="classB";
+                else importance="classC";
+                row.innerHTML=`
+                    <td>${material.raw_material}</td>
+                    <td>${material.annual_demand}</td>
+                    <td>${material.cost_per_gm}</td>
+                    <td>${material.annual_comsumption_value}</td>
+                    <td>${material.consumption_percentage}</td>
+                    <td>${material.cumulative_percentage_consumption}</td>
+                    <td class="${importance}">${material.class}</td>
+                `
+                tableBody.appendChild(row);
             });
         });
     }
