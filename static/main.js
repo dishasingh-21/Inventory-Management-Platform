@@ -613,7 +613,7 @@ document.addEventListener('DOMContentLoaded', () => {
             <h2>Economic Production Quantity</h2>
             <select id="select-product"></select>
             <div class="chart-box">
-                <canvas id="epq-chart"></chart>
+                <canvas id="epq-chart"></canvas>
             </div>
         `;
         initialize_Dashboard();
@@ -806,7 +806,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const t_consume=inventory/d;
             for(let i=0; i<20; i++){
                 let curr_time=t+(i/20)*t_consume;
-                let inv=inventory-d*(time-t);
+                let inv=inventory-d*(curr_time-t);
                 labels.push(Number(curr_time.toFixed(2)));
                 values.push(Number(inv.toFixed(2)));
             }
