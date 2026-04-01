@@ -699,6 +699,34 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
     let epq_chart;
+    function getEpqDatapoints(Q_star,d,p,time_to_produce_one_batch,D){
+        const cycles=Math.ceil(D/Q_star);
+        const labels=[];
+        const values=[];
+        let t=0;
+        let inventory=0;
+        for(let c=0; c<cycles; c++){
+            const t_production=time_to_produce_one_batch;
+            for(let i=0; i<20; i++){
+                let curr_time=t+(i/20)*t_production;
+                let inv=inventory+(p-d)*(curr_time-t);
+                labels.push(Number(curr_time.toFixed(2)));
+                values.push(Number(inv.toFixed(2)));
+            }
+            inventory=values[values.length-1];
+            t+=t_production;
+            const t_consume=inventory/d;
+            for(let i=0; i<20; i++){
+                let curr_time=t+(i/20)*t_consume;
+                let inv=inventory-d*(curr_time-t);
+                labels.push(Number(curr_time.toFixed(2)));
+                values.push(Number(inv.toFixed(2)));
+            }
+            inventory=values[values.length-1];
+            t+=t_consume;
+        }
+        return {labels, values};
+    }
     function loadEpqChart(product){
         fetch(`/api/EPQ/${product}`)
         .then(res=>res.json())
@@ -787,34 +815,6 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         });
         
-    }
-    function getEpqDatapoints(Q_star,d,p,time_to_produce_one_batch,D){
-        const cycles=Math.ceil(D/Q_star);
-        const labels=[];
-        const values=[];
-        let t=0;
-        let inventory=0;
-        for(let c=0; c<cycles; c++){
-            const t_production=time_to_produce_one_batch;
-            for(let i=0; i<20; i++){
-                let curr_time=t+(i/20)*t_production;
-                let inv=inventory+(p-d)*(curr_time-t);
-                labels.push(Number(curr_time.toFixed(2)));
-                values.push(Number(inv.toFixed(2)));
-            }
-            inventory=values[values.length-1];
-            t+=t_production;
-            const t_consume=inventory/d;
-            for(let i=0; i<20; i++){
-                let curr_time=t+(i/20)*t_consume;
-                let inv=inventory-d*(curr_time-t);
-                labels.push(Number(curr_time.toFixed(2)));
-                values.push(Number(inv.toFixed(2)));
-            }
-            inventory=values[values.length-1];
-            t+=t_consume;
-        }
-        return {labels, values};
     }
     function loadAllEpqCharts(product){
         loadEpqChart(product);

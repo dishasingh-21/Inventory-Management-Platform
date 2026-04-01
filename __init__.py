@@ -100,15 +100,10 @@ def create_app(test_config=None):
     def economic_production_quantity(product):
         conn = db.get_db()
         data=conn.execute(
-            'SELECT Average_yearly_demand,setup_cost,holding_cost,demand_per_day,production_rate_per_day FROM finished_goods WHERE product=?',(product,)
+            'SELECT epq FROM finished_goods WHERE product=?',(product,)
         ).fetchone()
-        D=data["Average_yearly_demand"]
-        Cs=data["setup_cost"]
-        Ch=data["holding_cost"]
-        d=data["demand_per_day"]
-        p=data["production_rate_per_day"]
-        epq = math.sqrt((2*D*Cs)/((1-d/p)*Ch))
-        return jsonify({"EPQ":round(epq,2)})
+        epq=data["epq"]
+        return jsonify({"EPQ":epq})
 
 
     #API to calculate reorder points of raw_materials
