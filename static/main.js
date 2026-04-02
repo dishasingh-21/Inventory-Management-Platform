@@ -687,15 +687,15 @@ document.addEventListener('DOMContentLoaded', () => {
         .then(res=>res.json())
         .then(products=>{
             products.forEach(product=>{
-                const product_name=product.product;
+                const product_name=product.product.trim();
                 const option=document.createElement("option");
                 option.value=product_name;
                 option.textContent=product_name;
                 select_epq.appendChild(option);
             });
-            loadAllEpqCharts(products[0].product);
+            loadAllEpqCharts(products[0].product.trim());
             select_epq.addEventListener("change", ()=>{
-                loadAllEpqCharts(select_epq.value);
+                loadAllEpqCharts(select_epq.value.trim());
             })
         });
     }

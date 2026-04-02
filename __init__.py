@@ -102,11 +102,8 @@ def create_app(test_config=None):
         data=conn.execute(
             'SELECT epq FROM finished_goods WHERE product=?',(product,)
         ).fetchone()
-        epq=0
-        for row in data:
-            epq=row["epq"]
+        epq=data["epq"]
         return jsonify({"EPQ":epq})
-
 
     #API to calculate reorder points of raw_materials
     @app.route("/api/reorder-point/<item>")
