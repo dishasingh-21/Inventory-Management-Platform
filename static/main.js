@@ -558,10 +558,21 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function renderDashboardPage(){
         contentArea.innerHTML=`
-            <h2>Product Performance</h2><br>
-            <select id="selectProduct"></select>
-            <div class="chart-box">
-                <canvas id="chart"></canvas>
+            <div class="graphs-container">
+                <div class="chart-box">
+                    <div class="graph-header">
+                        <h3>Product Performance</h3><br>
+                        <select id="selectProduct"></select>
+                    </div>
+                    <canvas id="chart"></canvas>
+                </div>
+                <div class="chart-box">
+                    <div class="graph-header">
+                        <h3>Economic Production Quantity</h3><br>
+                        <select id="select-product"></select>
+                    </div>
+                    <canvas id="epq-chart"></canvas>
+                </div>
             </div>
             <h2>ABC Analysis</h2><br>
             <div class="table-section">
@@ -609,11 +620,6 @@ document.addEventListener('DOMContentLoaded', () => {
                         </tbody>
                     </table>
                 </div>
-            </div>
-            <h2>Economic Production Quantity</h2>
-            <select id="select-product"></select>
-            <div class="chart-box">
-                <canvas id="epq-chart"></canvas>
             </div>
         `;
         initialize_Dashboard();
